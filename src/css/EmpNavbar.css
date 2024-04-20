@@ -1,0 +1,36 @@
+.nav-item {
+  padding: 0.6rem 0.75rem;
+  margin-top: 0.4rem;
+  margin-right: 1rem;
+  border-radius: 0.25rem;
+}
+
+.person {
+  margin-top: 0.1rem;
+}
+
+.dropd-item {
+  display: block;
+  padding: 0.5rem 0rem;
+  color: white;
+}
+
+.item-current {
+  background-color: rgba(0, 0, 0, 0.4);
+  border-radius: 0.2rem;
+}
+
+.nav-item:hover,
+.dropd-item:hover {
+  color: #00d9fa;
+}
+
+hr {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .smc\:hidden {
+    display: none;
+  }
+}
