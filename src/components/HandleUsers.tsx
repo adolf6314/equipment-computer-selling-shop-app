@@ -1,5 +1,4 @@
 import React from "react";
-import { EmpProfileProps } from "../class/Employee";
 
 export const handleLogin = async ({
   inputRefs,
@@ -66,7 +65,7 @@ export const handleLogin = async ({
 export const handleProfile = async ({
   setMyProfile,
 }: {
-  setMyProfile: (myProfile: EmpProfileProps) => void;
+  setMyProfile: (myProfile: any) => void;
 }) => {
   try {
     const response = await fetch(

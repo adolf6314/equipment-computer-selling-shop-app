@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { EmpNavbar } from "./EmpNavbar";
 import { EmpProfileProps, setEmpProfileDetailsByLang } from "../class/Employee";
 import { handleProfile } from "../components/HandleUsers";
+import { Modal, closeModal, openModal } from "../components/HandleModals";
+import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 
 export const EmpProfile = () => {
   const [language, setLanguage] = useState(
     `${localStorage.getItem("language")}`
   );
   const [myProfile, setMyProfile] = useState<EmpProfileProps | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     handleProfile({ setMyProfile });
@@ -59,9 +62,50 @@ export const EmpProfile = () => {
               <div className="bg-white shadow-md rounded-md p-4 bg-clip-border whitespace-normal break-words">
                 {handleProfileDetails()}
                 <div className="flex pt-3 pb-2">
-                  <button className="bg-orange-400 hover:bg-orange-500 px-3 py-1 rounded mr-4">
+                  <button
+                    className="bg-orange-400 hover:bg-orange-500 px-3 py-1 rounded mr-4"
+                    onClick={() => setIsOpen(openModal(document.body))}
+                  >
                     Edit Profile
                   </button>
+                  <Modal isOpen={isOpen}>
+                    <div className="flex justify-between">
+                      <div className="text-start font-bold text-xl">
+                        My Profile
+                      </div>
+                      <button
+                        onClick={() => setIsOpen(closeModal(document.body))}
+                      >
+                        <CloseRoundedIcon />
+                      </button>
+                    </div>
+                    <hr className="my-2 border border-black" />
+                    <div className="flex mb-2">
+                      <label
+                        htmlFor="Firstname"
+                        className="border border-cyan-950 bg-red-100 font-bold text-lg p-1 w-[30.2%] text-end"
+                      >
+                        Firstname
+                      </label>
+                      <input
+                        type="text"
+                        className="ml-1 pl-2 w-3/4 border border-cyan-950"
+                      />
+                    </div>
+                    <div className="flex mb-2">
+                      <label
+                        htmlFor="Lastname"
+                        className="border border-cyan-950 bg-red-100 font-bold text-lg p-1 w-[30.2%] text-end"
+                      >
+                        Lastname
+                      </label>
+                      <input
+                        type="text"
+                        className="ml-1 pl-2 w-3/4 border border-cyan-950"
+                      />
+                    </div>
+                    <p>This is the content of the modal.</p>
+                  </Modal>
                   <button className="bg-orange-400 hover:bg-orange-500 px-3 py-1 rounded mr-4">
                     Change Address
                   </button>

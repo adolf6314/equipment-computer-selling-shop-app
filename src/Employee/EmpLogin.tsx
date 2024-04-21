@@ -21,9 +21,9 @@ export const EmpLogin = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("role"))
-      if (localStorage.getItem("role") === "employee")
-        navigate("/eqmcpt/provider/profile");
+    // if (localStorage.getItem("role"))
+    //   if (localStorage.getItem("role") === "employee")
+    //     navigate("/eqmcpt/provider/profile");
   }, []);
 
   return (
