@@ -1,5 +1,11 @@
 import React from "react";
 
+export const removeObjectKey = (object: any, keys: string[]) => {
+  const newObj = object;
+  keys.forEach((key) => delete newObj[key]);
+  return newObj;
+};
+
 export const handleLogin = async ({
   inputRefs,
   email_or_username_selected,

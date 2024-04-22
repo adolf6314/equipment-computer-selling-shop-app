@@ -1,6 +1,5 @@
 export type EmpProfileProps = {
-  Firstname: string;
-  Lastname: string;
+  Fullname: string;
   Username: string;
   Email: string;
   Phone: string;
@@ -9,14 +8,27 @@ export type EmpProfileProps = {
   Address: string[];
 };
 
+export const getEmpRolesByLang = ({ language }: { language: string }) => {
+  if (language !== "EN") {
+    return ["ผู้ดูแลระบบ", "พนักงานขาย", "พนักงานส่งของ"];
+  }
+  return ["Admin", "Employee", "Delivery Worker"];
+};
+
+export const getEmpWorkStatusByLang = ({ language }: { language: string }) => {
+  if (language !== "EN") {
+    return ["ดำเนินงาน", "ลาออก"];
+  }
+  return ["Operate", "Resign"];
+};
+
 export const setEmpProfileDetailsByLang = (
   myProfile: EmpProfileProps,
   language: string
 ) => {
   if (language !== "EN") {
     return {
-      ชื่อ: myProfile.Firstname,
-      นามสกุล: myProfile.Lastname,
+      "ชื่อ-นามสกุล": myProfile.Fullname,
       ชื่อผู้ใช้: myProfile.Username,
       อีเมล: myProfile.Email,
       เบอร์โทร: myProfile.Phone,
@@ -26,8 +38,7 @@ export const setEmpProfileDetailsByLang = (
     };
   }
   return {
-    Firstname: myProfile.Firstname,
-    Lastname: myProfile.Lastname,
+    Fullname: myProfile.Fullname,
     Username: myProfile.Username,
     Email: myProfile.Email,
     Phone: myProfile.Phone,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ButtonCLR } from "../class/Button";
+import { buttonCLR } from "../class/Button";
 import { useNavigate } from "react-router-dom";
 import { handleLogin } from "../components/HandleUsers";
 
@@ -81,7 +81,7 @@ export const EmpLogin = () => {
               <p className="border bg-red-400 text-center py-1"></p>
             </div>
             <button
-              className={`${ButtonCLR({ color: "Success" })} mt-3 w-full py-1`}
+              className={`${buttonCLR({ color: "Success" })} mt-3 w-full py-1`}
               onClick={() =>
                 handleLogin({
                   inputRefs: inputRefs.current,
@@ -94,7 +94,7 @@ export const EmpLogin = () => {
               Confrim
             </button>
             <button
-              className={`${ButtonCLR({ color: "Danger" })} my-3 w-full py-1`}
+              className={`${buttonCLR({ color: "Danger" })} my-3 w-full py-1`}
             >
               Cancel
             </button>
