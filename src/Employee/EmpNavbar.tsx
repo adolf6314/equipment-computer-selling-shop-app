@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import PersonIcon from "@mui/icons-material/Person";
-import MenuIcon from "@mui/icons-material/Menu";
 import "../css/EmpNavbar.css";
 import { useState } from "react";
 import {
@@ -8,7 +6,7 @@ import {
   MenusState,
   NavItem,
   ProfileMenu,
-} from "../components/RenderItems";
+} from "../components/Navbar/RenderItems";
 
 export const EmpNavbar = ({
   language,
@@ -45,7 +43,7 @@ export const EmpNavbar = ({
             </div>
             <div className="my-auto items-center">
               <div className="flex text-lg text-white">
-                <div className="hidden md:block my-2">
+                <div className="hidden md:block my-auto">
                   <NavItem
                     classLink="nav-item"
                     itemCurrent={itemCurrent}
@@ -53,10 +51,7 @@ export const EmpNavbar = ({
                   />
                 </div>
                 <button onClick={() => toggleMenu("prof")}>
-                  <PersonIcon
-                    sx={{ fontSize: 40 }}
-                    className="pt-1 pb-2 px-2 bg-black bg-opacity-15 rounded-md hover:bg-opacity-75 mt-[0.1rem] mr-3"
-                  />
+                  <i className="fa-solid fa-user text-[40] py-[0.67rem] px-[0.8rem] bg-black bg-opacity-15 rounded-md hover:bg-opacity-75 mr-3"></i>
                 </button>
                 <button onClick={() => toggleMenu("lang")}>
                   <div className="py-[0.36rem] px-[0.6rem] bg-black bg-opacity-15 rounded-md hover:bg-opacity-75">
@@ -65,10 +60,7 @@ export const EmpNavbar = ({
                 </button>
                 <div className="smc:hidden">
                   <button onClick={() => toggleMenu("nav")}>
-                    <MenuIcon
-                      sx={{ fontSize: 40 }}
-                      className="pt-1 pb-2 px-2 ml-3 bg-black bg-opacity-15 rounded-md hover:bg-opacity-75"
-                    />
+                    <i className="fa-solid fa-bars text-[40] py-[0.67rem] px-[0.8rem] bg-black bg-opacity-15 rounded-md hover:bg-opacity-75 ml-3"></i>
                   </button>
                 </div>
               </div>
@@ -78,24 +70,24 @@ export const EmpNavbar = ({
       </nav>
       <div className="smc:hidden">
         {(menus.navMenu || menus.profMenu || menus.langMenu) && (
-          <div className="mx-auto max-w-11xl px-2 sm:px-6 lg:px-8 bg-[#212529]">
+          <div className="mx-auto max-w-11xl pb-1 sm:px-6 lg:px-8 bg-[#212529]">
             {menus.navMenu && (
               <NavItem
-                classLink="dropd-item"
+                classLink="px-2 dropd-item"
                 itemCurrent={itemCurrent}
                 language={language}
               />
             )}
             {menus.profMenu && (
               <ProfileMenu
-                classLink="dropd-item text-start"
+                classLink="px-2 dropd-item text-start"
                 itemCurrent={itemCurrent}
                 language={language}
               />
             )}
             {menus.langMenu && (
               <LanguageMenu
-                classLink="dropd-item text-start"
+                classLink="px-2 dropd-item text-start"
                 language={language}
                 setMenus={setMenus}
                 onLanguageChange={setLanguage}

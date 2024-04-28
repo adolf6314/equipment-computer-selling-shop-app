@@ -1,12 +1,7 @@
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import AccountBoxRoundedIcon from "@mui/icons-material/AccountBoxRounded";
-import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
-import PhoneIphoneRoundedIcon from "@mui/icons-material/PhoneIphoneRounded";
-import WcRoundedIcon from "@mui/icons-material/WcRounded";
-import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import { ReactNode, useState } from "react";
-import { getEmpLabels } from "../class/User/Employee";
-import { getGenders, getValue } from "../class/User/User";
+import { getUserLabel } from "./Labels/UserLabel";
+import { getGenders } from "./ItemsInProps/Genders";
+import { getUserValue } from "./ItemsInProps/Values";
 
 export const GetEditForm = ({
   profile,
@@ -15,19 +10,25 @@ export const GetEditForm = ({
   profile: any;
   language: string;
 }) => {
-  const icons: Record<string, ReactNode> = {
-    firstname: <PersonRoundedIcon sx={{ fontSize: 30 }} color="action" />,
-    lastname: <PersonRoundedIcon sx={{ fontSize: 30 }} color="action" />,
-    username: <AccountBoxRoundedIcon sx={{ fontSize: 30 }} color="action" />,
-    email: <EmailRoundedIcon sx={{ fontSize: 30 }} color="action" />,
-    phone: <PhoneIphoneRoundedIcon sx={{ fontSize: 30 }} color="action" />,
-    gender: <WcRoundedIcon sx={{ fontSize: 30 }} color="action" />,
+  const icons: Record<string, string> = {
+    // firstname: <PersonRoundedIcon sx={{ fontSize: 30 }} color="action" />,
+    // lastname: <PersonRoundedIcon sx={{ fontSize: 30 }} color="action" />,
+    // username: <AccountBoxRoundedIcon sx={{ fontSize: 30 }} color="action" />,
+    // email: <EmailRoundedIcon sx={{ fontSize: 30 }} color="action" />,
+    // phone: <PhoneIphoneRoundedIcon sx={{ fontSize: 30 }} color="action" />,
+    // gender: <WcRoundedIcon sx={{ fontSize: 30 }} color="action" />,
+    firstname: "",
+    lastname: "",
+    username: "",
+    email: "",
+    phone: "",
+    gender: "",
   };
   const placholder: Record<string, string> = {
-    firstname: getEmpLabels({ index: "firstname", language: language }),
-    lastname: getEmpLabels({ index: "lastname", language: language }),
-    email: getEmpLabels({ index: "email", language: language }),
-    phone: getEmpLabels({ index: "phone", language: language }),
+    firstname: getUserLabel("firstname", language),
+    lastname: getUserLabel("lastname", language),
+    email: getUserLabel("email", language),
+    phone: getUserLabel("phone", language),
     gender: language !== "EN" ? "เลือกเพศ" : "Select gender type",
   };
   const [user, setUser] = useState({
@@ -92,17 +93,15 @@ export const GetEditForm = ({
               className="border border-gray-400 rounded rounded-l-none px-2 py-[0.44rem] w-full flex justify-between"
               onClick={() => toggleDropDown(prop)}
             >
-              {getValue({ value: (user as any)[prop], language: language })}
-              <ArrowDropDownRoundedIcon
+              {getUserValue((user as any)[prop], language)}
+              {/* <ArrowDropDownRoundedIcon
                 className={menus[prop] ? "rotate-180" : ""}
-              />
+              /> */}
             </button>
             {menus.gender &&
               renderMenus({
                 key: prop,
-                items: Array.from(
-                  getGenders({ index: "", language: language })
-                ),
+                items: Array.from(getGenders("", language)),
               })}
           </div>
         ) : (

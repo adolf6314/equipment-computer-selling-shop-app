@@ -1,12 +1,6 @@
 import React from "react";
-import { getRoles } from "../class/User/Employee";
-import { getGenders } from "../class/User/User";
-
-export const removeObjectKey = (object: any, keys: string[]) => {
-  const newObj = object;
-  keys.forEach((key) => delete newObj[key]);
-  return newObj;
-};
+import { getRoles } from "./ItemsInProps/Roles";
+import { getGenders } from "./ItemsInProps/Genders";
 
 export const handleLogin = async ({
   user,
@@ -63,8 +57,10 @@ export const handleLogin = async ({
 
 export const handleProfile = async ({
   setMyProfile,
+  setMyAddress,
 }: {
   setMyProfile: (myProfile: any) => void;
+  setMyAddress: (myAddress: any) => void;
 }) => {
   try {
     const response = await fetch(
@@ -81,12 +77,19 @@ export const handleProfile = async ({
     else {
       const profile = (await response.json()).profile;
 
-      if (profile.role)
-        profile.role = getRoles({ index: profile.role, language: "all" });
-      if (profile.gender)
-        profile.gender = getGenders({ index: profile.gender, language: "all" });
+      if (profile.role) profile.role = getRoles(profile.role, "all");
+      if (profile.gender) profile.gender = getGenders(profile.gender, "all");
 
-      setMyProfile(profile);
+      profile["full_address"] = [
+        `${profile.address}, ${profile.province.th}, ${profile.district.th}, ${profile.sub_district.th} ${profile.sub_district.code}`,
+        `${profile.address}, ${profile.province.en}, ${profile.district.en}, ${profile.sub_district.en} ${profile.sub_district.code}`,
+      ];
+      console.log(profile);
+
+      setMyProfile({
+        firstname: profile.firstname,
+        lastname: profile.
+      });
     }
   } catch (error) {
     console.error(error);

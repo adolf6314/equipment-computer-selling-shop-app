@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import { EmpNavbar } from "./EmpNavbar";
 import { handleProfile } from "../components/HandleUsers";
-import { getEmpLabels } from "../class/User/Employee";
-import { getValue } from "../class/User/User";
+import { getUserLabel } from "../components/Labels/UserLabel";
+import { getUserValue } from "../components/ItemsInProps/Values";
 import { Modal } from "@mui/material";
-import {
-  ArrowDropDownRounded,
-  CloseRounded,
-  PersonRounded,
-} from "@mui/icons-material";
 import { buttonCLR } from "../class/Button";
 
 export const EmpProfile = () => {
@@ -16,36 +11,42 @@ export const EmpProfile = () => {
     `${localStorage.getItem("language")}`
   );
   const [myProfile, setMyProfile] = useState(null);
+  const [myAddress, setMyAddress] = useState(null);
   const [open, setOpen] = useState(false);
   const [modal, setModal] = useState("");
 
   useEffect(() => {
-    handleProfile({ setMyProfile });
   }, [setMyProfile]);
 
   const handleProfileDetails = () => {
-    return Object.keys(myProfile!).map((label, index) => (
-      <div key={index}>
-        <div className="flex flex-col py-2 sm:flex-row">
-          <div className="sm:w-1/4 md:w-1/4 lg:w-1/4 xl:w-1/4">
-            <p className="text-xl">
-              {language !== "EN"
-                ? getEmpLabels({ index: label, language: language })
-                : label}
-            </p>
+    return Object.keys(myProfile!)
+      .filter(
+        (profs) =>
+          ![
+            "address",
+            "region",
+            "province",
+            "district",
+            "sub_district",
+          ].includes(profs)
+      )
+      .map((label, index) => (
+        <div key={index}>
+          <div className="flex flex-col py-2 sm:flex-row">
+            <div className="sm:w-1/4 md:w-1/4 lg:w-1/4 xl:w-1/4">
+              <p className="text-xl">
+                {language !== "EN" ? getUserLabel(label, language) : label}
+              </p>
+            </div>
+            <div className="sm:w-3/4 md:w-3/4 lg:w-3/4 xl:w-3/4">
+              <p className="text-lg text-gray-600">
+                {getUserValue((myProfile as any)[label], language)}
+              </p>
+            </div>
           </div>
-          <div className="sm:w-3/4 md:w-3/4 lg:w-3/4 xl:w-3/4">
-            <p className="text-lg text-gray-600">
-              {getValue({
-                value: (myProfile as any)[label],
-                language: language,
-              })}
-            </p>
-          </div>
+          <hr />
         </div>
-        <hr />
-      </div>
-    ));
+      ));
   };
 
   const handleOpen = (index: string) => {
@@ -130,78 +131,11 @@ export const EmpProfile = () => {
                                   : "Change Password"}
                               </div>
                               <button onClick={handleClose}>
-                                <CloseRounded />
+                                <i className="fa-solid fa-xmark fa-lg"></i>
                               </button>
                             </div>
                             <hr className="border border-black mt-1 mb-3" />
-                            <div key="test" className="flex mb-3">
-                              <label
-                                htmlFor="test"
-                                className="border border-gray-400 rounded rounded-r-none bg-zinc-300 p-1"
-                              >
-                                TestDropdown
-                              </label>
-                              <div className="relative flex w-full">
-                                <button
-                                  className="border border-gray-400 rounded rounded-l-none px-2 py-[0.44rem] w-full flex justify-between"
-                                  onClick={() => toggleDropdown("gender")}
-                                >
-                                  Powder
-                                  <ArrowDropDownRounded
-                                    className={menus.gender ? "rotate-180" : ""}
-                                  />
-                                </button>
-                                {menus.gender && (
-                                  <div className="absolute mt-1 p-1 theme-white w-full z-50">
-                                    <div className="border border-black p-1">
-                                      {["male", "female"].map(
-                                        (value, index) => (
-                                          <div key={index}>
-                                            <button className="text-start w-full hover:bg-white">
-                                              {value}
-                                            </button>
-                                            {value.length - 1 !== index ? (
-                                              <hr className="my-1 border border-gray-600" />
-                                            ) : (
-                                              ""
-                                            )}
-                                          </div>
-                                        )
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                                <button
-                                  className="border border-gray-400 rounded rounded-l-none px-2 py-[0.44rem] w-full flex justify-between"
-                                  onClick={() => toggleDropdown("gender")}
-                                >
-                                  Powder
-                                  <ArrowDropDownRounded
-                                    className={menus.gender ? "rotate-180" : ""}
-                                  />
-                                </button>
-                                {menus.gender && (
-                                  <div className="absolute mt-1 p-1 theme-white w-full z-50">
-                                    <div className="border border-black p-1">
-                                      {["male", "female"].map(
-                                        (value, index) => (
-                                          <div key={index}>
-                                            <button className="text-start w-full hover:bg-white">
-                                              {value}
-                                            </button>
-                                            {value.length - 1 !== index ? (
-                                              <hr className="my-1 border border-gray-600" />
-                                            ) : (
-                                              ""
-                                            )}
-                                          </div>
-                                        )
-                                      )}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
+                            <i className="fa-solid fa-caret-down"></i>
                             <button
                               className={`${buttonCLR({
                                 color: "Success",

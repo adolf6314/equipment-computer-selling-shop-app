@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { handleLogout } from "./HandleUsers";
+import { handleLogout } from "../HandleUsers";
 import React from "react";
 
 export type MenusState = {

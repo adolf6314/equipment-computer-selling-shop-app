@@ -1,37 +1,58 @@
-import {
-  AccountBoxRounded,
-  EmailRounded,
-  PersonRounded,
-  PhoneIphoneRounded,
-  WcRounded,
-} from "@mui/icons-material";
-import { ReactNode, useState } from "react";
+import { useState } from "react";
+import { getUserLabel } from "../Labels/UserLabel";
+import { getUserIcon } from "../Icons/UserIcon";
 
 export const ProfileForm = ({
+  formType,
   myProfile,
-  properties,
+  props,
   language,
 }: {
-  myProfile: any;
-  properties: Array<string | string[]>;
+  formType: string;
+  myProfile: any | null;
+  props: Array<string | string[]>;
   language: string;
 }) => {
   const [menus, setMenus] = useState({
     gender: false,
   });
-  const [user, setUser] = useState({
-    firstname: myProfile.firstname ? myProfile.firstname : "",
-    lastname: myProfile.lastname ? myProfile.lastname : "",
-    email: myProfile.email ? myProfile.email : "",
-    phone: myProfile.phone ? myProfile.phone : "",
-    gender: myProfile.gender ? myProfile.gender : "",
-  });
-  const icons: Record<string, ReactNode> = {
-    firstname: <PersonRounded sx={{ fontSize: 30 }} color="action" />,
-    username: <AccountBoxRounded sx={{ fontSize: 30 }} color="action" />,
-    email: <EmailRounded sx={{ fontSize: 30 }} color="action" />,
-    phone: <PhoneIphoneRounded sx={{ fontSize: 30 }} color="action" />,
-    gender: <WcRounded sx={{ fontSize: 30 }} color="action" />,
+
+  const userFormInitial = () => {
+    switch (formType) {
+      case "profile":
+        return {
+          firstname: myProfile.firstname || "",
+          lastname: myProfile.lastname || "",
+          email: myProfile.email || "",
+          phone: myProfile.phone || "",
+          gender: myProfile.gender || "",
+        };
+      case "address":
+        return {
+          address: myProfile.address || "",
+          region: myProfile.region,
+          province: myProfile.province,
+          district: myProfile.district,
+          sub_district: myProfile.sub_district,
+        };
+      case "password":
+        return {
+          old_password: "",
+          new_password: "",
+          repeat_new_password: "",
+        };
+      default:
+        return {};
+    }
+  };
+
+  const [user, setUser] = useState(userFormInitial());
+
+  const handleUser = (prop: string, value: string) => {
+    setUser((prevUser) => ({
+      ...prevUser,
+      [prop]: value,
+    }));
   };
 
   const toggleDropDown = (menuType: string) => {
@@ -41,58 +62,82 @@ export const ProfileForm = ({
     }));
   };
 
-  const handleUser = (prop: string, value: string) => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      [prop]: value,
-    }));
+  const renderInputGroups = (items: string[]) => {
+    return items.map((item, nMod) => {
+      <input
+        key={item}
+        type="text"
+        className={`w-full border border-gray-400 p-1 ${
+          (nMod + 1) % 2 !== 0 ? "mr-[0.3rem]" : "ml-[0.3rem]"
+        }`}
+        defaultValue={(user as any)[item]}
+        placeholder={getUserLabel(item, language)}
+        onChange={(e) => handleUser(item, e.target.value)}
+      />;
+    });
   };
 
-  const InputGroups = (props: string[]) => {
-    switch (props.length) {
-      case 1:
-        return (
-          <>
-            <label
-              htmlFor={props[0]}
-              className="border border-gray-400 rounded rounded-r-none bg-zinc-300 p-1"
-            >
-              {icons[props[0]]}
-            </label>
-            <input
-              type="text"
-              className="w-full border border-gray-400 border-l-0 rounded rounded-l-none p-1"
-            />
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <label
-              htmlFor={props.join("_")}
-              className="border border-gray-400 rounded rounded-r-none bg-zinc-300 p-1"
-            >
-              <PersonRounded sx={{ fontSize: 30 }} color="action" />
-            </label>
-            <input
-              type="text"
-              className="w-full border border-gray-400 border-l-0 mr-[0.1rem] p-1"
-              placeholder="Firstname"
-            />
-            <input
-              type="text"
-              className="w-full border border-gray-400 rounded rounded-l-none ml-[0.1rem] p-1"
-              placeholder="Lastname"
-            />
-          </>
-        );
-    }
+  const renderDropdownGroups = (values: Array<string[]>) => {
+    return props.map((prop, nMod) => {
+      <div
+        key={typeof prop !== "string" ? prop.join("_") : prop}
+        className={`relative w-full ${
+          (nMod + 1) % 2 !== 0 ? "mr-[0.3rem]" : "ml-[0.3rem]"
+        }`}
+      >
+        <button className="border border-gray-400 px-2 py-[0.44rem] w-full flex justify-between">
+          {prop}
+          <i className="fa-solid fa-caret-down text-zinc-600"></i>
+        </button>
+        <div className="absolute mt-1 theme-white w-full z-50">
+          <div className="border border-black p-1">
+            {values.map((val, num) => (
+              <div key={`${prop}_${num}`}>
+                <button className="text-start w-full hover:bg-white">
+                  {val}
+                </button>
+                {values.length - 1 !== num ? (
+                  <hr className="my-1 border border-gray-600" />
+                ) : (
+                  ""
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>;
+    });
   };
 
-  const DropdownGroups = (props: string[]) => {
-    switch(props.length){
-        case 1:
-            return
-    }
+  const checkPropPath = (items: string[]) => {
+    items.map((item) => {
+      if (
+        item === "gender" ||
+        item === "region" ||
+        item === "province" ||
+        item === "district" ||
+        item === "sub_district"
+      ) {
+        
+      }
+    });
+  };
+
+  const renderForm = () => {
+    props.map((prop, key) => (
+      <div key={key} className="flex mb-3">
+        <label
+          htmlFor={typeof prop !== "string" ? prop.join("_") : prop}
+          className="border border-gray-400 rounded rounded-r-none bg-zinc-300 p-1"
+        >
+          <i
+            className={`${getUserIcon(
+              typeof prop !== "string" ? prop[0] : prop
+            )} text-[1.5rem] text-zinc-600`}
+          ></i>
+        </label>
+        {}
+      </div>
+    ));
   };
 };
