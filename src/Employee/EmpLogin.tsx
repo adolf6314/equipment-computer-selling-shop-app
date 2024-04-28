@@ -1,30 +1,30 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { buttonCLR } from "../class/Button";
 import { useNavigate } from "react-router-dom";
 import { handleLogin } from "../components/HandleUsers";
 
 export const EmpLogin = () => {
   const navigate = useNavigate();
-  const [email_or_username_selected, set_email_or_username_selected] =
-    useState("username");
-  const errorLogin = useRef<HTMLDivElement>(null);
-  const inputRefs = useRef<{
-    [key: string]: React.MutableRefObject<HTMLInputElement | null>;
-  }>({
-    email_or_username_result: useRef<HTMLInputElement>(null),
-    password: useRef<HTMLInputElement>(null),
+  const [employee, setEmployee] = useState({
+    usernameOrEmail: "username",
+    usernameOrEmailResult: "",
+    password: "",
+    role: "employee",
   });
+  const errorLogin = useRef<HTMLDivElement>(null);
 
-  const handleUsernameChange = (inputType: string) => {
-    if (inputType !== email_or_username_selected)
-      set_email_or_username_selected(inputType);
+  const handleEmpLoginPropsChange = (prop: string, val: string) => {
+    setEmployee((prevProps) => ({
+      ...prevProps,
+      [prop]: val,
+    }));
   };
 
   useEffect(() => {
-    // if (localStorage.getItem("role"))
-    //   if (localStorage.getItem("role") === "employee")
-    //     navigate("/eqmcpt/provider/profile");
-  }, []);
+    if (localStorage.getItem("role"))
+      if (localStorage.getItem("role") === "employee")
+        navigate("/eqmcpt/provider/profile");
+  }, [navigate]);
 
   return (
     <div className="theme-white h-screen">
@@ -39,29 +39,38 @@ export const EmpLogin = () => {
               <button
                 id="username"
                 className={
-                  email_or_username_selected === "username"
+                  employee.usernameOrEmail === "username"
                     ? "bg-white text-black p-1"
                     : "border p-1"
                 }
-                onClick={() => handleUsernameChange("username")}
+                onClick={() =>
+                  handleEmpLoginPropsChange("usernameOrEmail", "username")
+                }
               >
                 Username
               </button>
               <button
                 id="email"
                 className={
-                  email_or_username_selected === "email"
+                  employee.usernameOrEmail === "email"
                     ? "bg-white text-black p-1"
                     : "border p-1"
                 }
-                onClick={() => handleUsernameChange("email")}
+                onClick={() =>
+                  handleEmpLoginPropsChange("usernameOrEmail", "email")
+                }
               >
                 email
               </button>
               <input
-                ref={inputRefs.current["email_or_username_result"]}
                 type="text"
                 className="ml-1 pl-2 w-3/4 text-black"
+                onChange={(e) =>
+                  handleEmpLoginPropsChange(
+                    "usernameOrEmailResult",
+                    e.target.value
+                  )
+                }
               />
             </div>
             <div className="flex my-3 text-black">
@@ -72,9 +81,11 @@ export const EmpLogin = () => {
                 Password
               </label>
               <input
-                ref={inputRefs.current["password"]}
                 type="password"
                 className="ml-1 pl-2 w-[69%]"
+                onChange={(e) =>
+                  handleEmpLoginPropsChange("password", e.target.value)
+                }
               />
             </div>
             <div ref={errorLogin} className="hidden">
@@ -84,8 +95,7 @@ export const EmpLogin = () => {
               className={`${buttonCLR({ color: "Success" })} mt-3 w-full py-1`}
               onClick={() =>
                 handleLogin({
-                  inputRefs: inputRefs.current,
-                  email_or_username_selected: email_or_username_selected,
+                  user: employee,
                   role: "employee",
                   errors: errorLogin,
                 })

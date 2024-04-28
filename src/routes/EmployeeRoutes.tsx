@@ -8,7 +8,7 @@ import { Brand } from "./Brand";
 import { Advertisement } from "./Advertisement";
 import { NsdDashboard } from "../Employee/NameSubDetail/NsdDashboard";
 
-export const Employee = () => {
+export const EmployeeRoutes = () => {
   const PrivateRoute = (element: React.ReactNode) => {
     return localStorage.getItem("token") &&
       localStorage.getItem("role") === "employee" ? (

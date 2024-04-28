@@ -1,4 +1,6 @@
 import React from "react";
+import { getRoles } from "../class/User/Employee";
+import { getGenders } from "../class/User/User";
 
 export const removeObjectKey = (object: any, keys: string[]) => {
   const newObj = object;
@@ -7,32 +9,23 @@ export const removeObjectKey = (object: any, keys: string[]) => {
 };
 
 export const handleLogin = async ({
-  inputRefs,
-  email_or_username_selected,
+  user,
   role,
   errors,
 }: {
-  inputRefs: {
-    [key: string]: React.MutableRefObject<HTMLInputElement | null>;
-  };
-  email_or_username_selected: string;
+  user: any;
   role: string;
   errors: React.MutableRefObject<HTMLDivElement | null>;
 }) => {
   try {
     let reqBody: { [key: string]: string } = {};
 
-    Object.entries(inputRefs).forEach(([key, attr]) => {
-      if (attr.current?.value === "")
+    Object.entries(user).forEach(([key, val]) => {
+      if (val === "")
         throw new Error("ข้อมูลที่กรอกไม่ครบถ้วน Incomplete data filled out");
 
-      reqBody[key] = String(attr.current?.value);
+      reqBody[key] = String(val);
     });
-
-    reqBody["email_or_username_selected"] = email_or_username_selected;
-    reqBody["role"] = role;
-
-    console.log(reqBody);
 
     const response = await fetch(
       "http://127.0.0.1:8000/api/eqmcpt/user/login",
@@ -85,7 +78,16 @@ export const handleProfile = async ({
     );
 
     if (!response.ok) throw new Error("Invalid Profile");
-    else setMyProfile((await response.json()).profile);
+    else {
+      const profile = (await response.json()).profile;
+
+      if (profile.role)
+        profile.role = getRoles({ index: profile.role, language: "all" });
+      if (profile.gender)
+        profile.gender = getGenders({ index: profile.gender, language: "all" });
+
+      setMyProfile(profile);
+    }
   } catch (error) {
     console.error(error);
   }

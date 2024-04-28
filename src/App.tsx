@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./Member/Home";
-import { Employee } from "./routes/Employee";
+import { EmployeeRoutes } from "./routes/EmployeeRoutes";
 import { useEffect, useState } from "react";
 
 export const App = () => {
@@ -16,7 +16,7 @@ export const App = () => {
         <Route path="/home" element={<Home />} />
 
         {/* Employee or Provider Route */}
-        <Route path="/eqmcpt/provider/*" element={<Employee />} />
+        <Route path="/eqmcpt/provider/*" element={<EmployeeRoutes />} />
 
         {/* <Route path="*" element={<Navigate to={"/home"} />} /> */}
       </Routes>

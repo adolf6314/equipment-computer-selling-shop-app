@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
-import { GetInputRefsIndividual } from "../class/Employee/EmpHandleRefs";
+import React, { useEffect, useRef, useState } from "react";
+import { GetEditForm } from "./EditForm";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import { buttonCLR } from "../class/Button";
 
@@ -18,6 +18,7 @@ export const Modal = ({
   setIsOpen,
   body,
   profile,
+  role,
   title,
   language,
 }: {
@@ -25,24 +26,10 @@ export const Modal = ({
   setIsOpen: (isOpen: boolean) => void;
   body: HTMLElement;
   profile: any;
+  role: string;
   title: string;
   language: string;
 }) => {
-  const inputRefs = useRef<{
-    [key: string]: React.MutableRefObject<HTMLInputElement | null>;
-  }>({});
-  const keys = useRef<string[]>([]);
-
-  useEffect(() => {
-    keys.current = Object.keys(profile).filter(
-      (item) => !["Role", "Address"].includes(item)
-    );
-    
-    keys.current.forEach((prof) => {
-      inputRefs.current[prof] = React.createRef<HTMLInputElement>();
-    });
-  }, [inputRefs, profile]);
-
   if (!isOpen) return null;
 
   return (
@@ -59,12 +46,7 @@ export const Modal = ({
             </button>
           </div>
           <hr className="border border-black mt-1 mb-3" />
-          <GetInputRefsIndividual
-            keys={keys.current}
-            profile={profile}
-            inputRef={inputRefs.current}
-            language={language}
-          />
+          <GetEditForm profile={profile} language={language} />
           <button
             className={`${buttonCLR({
               color: "Success",
