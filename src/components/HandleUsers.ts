@@ -75,21 +75,18 @@ export const handleProfile = async ({
 
     if (!response.ok) throw new Error("Invalid Profile");
     else {
-      const profile = (await response.json()).profile;
+      const { profile, address } = await response.json();
 
       if (profile.role) profile.role = getRoles(profile.role, "all");
       if (profile.gender) profile.gender = getGenders(profile.gender, "all");
 
-      profile["full_address"] = [
-        `${profile.address}, ${profile.province.th}, ${profile.district.th}, ${profile.sub_district.th} ${profile.sub_district.code}`,
-        `${profile.address}, ${profile.province.en}, ${profile.district.en}, ${profile.sub_district.en} ${profile.sub_district.code}`,
+      profile["address"] = [
+        `${address.address}, ${address.province[0]}, ${address.district[0]}, ${address.sub_district[0]} ${address.post_code}`,
+        `${address.address}, ${address.province[1]}, ${address.district[1]}, ${address.sub_district[1]} ${address.post_code}`,
       ];
-      console.log(profile);
 
-      setMyProfile({
-        firstname: profile.firstname,
-        lastname: profile.
-      });
+      setMyProfile(profile);
+      setMyAddress(address);
     }
   } catch (error) {
     console.error(error);

@@ -5,7 +5,7 @@ export const getUserIcon = (prop: string) => {
     username: "fa-solid fa-circle-user",
     email: "fa-solid fa-envelope",
     phone: "fa-solid fa-mobile-screen-button",
-    gender: "fa-solid fa-venus-mars",
+    gender: "fa-solid fa-transgender",
     old_password: "fa-solid fa-unlock-keyhole",
     new_password: "fa-solid fa-unlock-keyhole",
     repeat_new_password: "fa-solid fa-unlock-keyhole",
