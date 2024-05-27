@@ -6,7 +6,7 @@ import {
   MenusState,
   NavItem,
   ProfileMenu,
-} from "../components/Navbar/RenderItems";
+} from "../components/navbars/RenderItems";
 
 export const EmpNavbar = ({
   language,

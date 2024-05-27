@@ -1,6 +1,7 @@
 import React from "react";
-import { getRoles } from "./ItemsInProps/Roles";
-import { getGenders } from "./ItemsInProps/Genders";
+import { getRoles } from "./items_in_props/Roles";
+import { getGenders } from "./items_in_props/Genders";
+import { getAddress } from "./items_in_props/Address";
 
 export const handleLogin = async ({
   user,
@@ -77,13 +78,10 @@ export const handleProfile = async ({
     else {
       const { profile, address } = await response.json();
 
-      if (profile.role) profile.role = getRoles(profile.role, "all");
-      if (profile.gender) profile.gender = getGenders(profile.gender, "all");
+      if (profile.role) profile.role = getRoles(profile.role);
+      if (profile.gender) profile.gender = getGenders(profile.gender);
 
-      profile["address"] = [
-        `${address.address}, ${address.province[0]}, ${address.district[0]}, ${address.sub_district[0]} ${address.post_code}`,
-        `${address.address}, ${address.province[1]}, ${address.district[1]}, ${address.sub_district[1]} ${address.post_code}`,
-      ];
+      profile["address"] = getAddress(address);
 
       setMyProfile(profile);
       setMyAddress(address);

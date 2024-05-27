@@ -39,3 +39,20 @@
 .theme-white-glass {
   background-color: rgba(222, 226, 230, 0.7);
 }
+
+/* Customize scrollbar width */
+.scrollbar-1px::-webkit-scrollbar {
+  width: 4px; /* Adjust width as needed */
+}
+
+/* Customize scrollbar thumb */
+.scrollbar-thumb-black::-webkit-scrollbar-thumb {
+  background-color: black;
+  border-radius: 9999px; /* Adjust border-radius as needed */
+}
+
+/* Customize scrollbar track */
+.scrollbar-track-white::-webkit-scrollbar-track {
+  background-color: #dee2e6; /* Adjust color as needed */
+  border-radius: 9999px; /* Adjust border-radius as needed */
+}

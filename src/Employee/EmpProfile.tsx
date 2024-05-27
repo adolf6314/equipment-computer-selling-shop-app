@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import { EmpNavbar } from "./EmpNavbar";
 import { handleProfile } from "../components/HandleUsers";
-import { getUserLabel } from "../components/Labels/UserLabel";
-import { getUserValue } from "../components/ItemsInProps/Values";
+import { getUserLabel } from "../components/labels/UserLabel";
+import { getUserValue } from "../components/items_in_props/Values";
 import { Modal } from "@mui/material";
-import { buttonCLR } from "../class/Button";
-import { ProfileForm } from "../components/Forms/ProfileForm";
+import { ProfileForm } from "../components/forms/ProfileForm";
+import {
+  Address,
+  Profile,
+} from "../components/props/ProfileFormProps";
+import { LoaderCircle } from "../class/Loader";
 
 export const EmpProfile = () => {
   const [language, setLanguage] = useState(
     `${localStorage.getItem("language")}`
   );
-  const [myProfile, setMyProfile] = useState(null);
-  const [myAddress, setMyAddress] = useState(null);
+  const [myProfile, setMyProfile] = useState<Profile | null>(null);
+  const [myAddress, setMyAddress] = useState<Address | null>(null);
   const [open, setOpen] = useState(false);
-  const [modal, setModal] = useState<any>({});
+  const [modal, setModal] = useState("");
 
   useEffect(() => {
     handleProfile({ setMyProfile: setMyProfile, setMyAddress: setMyAddress });
@@ -40,50 +44,20 @@ export const EmpProfile = () => {
     ));
   };
 
-  const handleOpen = (modalType: string) => {
-    const modals: Record<string, any> = {
-      profile: {
-        type: "profile",
-        title: {
-          TH: "ข้อมูลของฉัน",
-          EN: "My Profile",
-        },
-        oldValues: myProfile,
-        props: [["firstname", "lastname"], "email", "phone", "gender"],
-      },
-      address: {
-        type: "address",
-        title: {
-          TH: "ที่อยู่ของฉัน",
-          EN: "My Address",
-        },
-        oldValues: myAddress,
-        props: ["address", ["region", "province"], "district", "sub_district"],
-      },
-      password: {
-        type: "password",
-        title: {
-          TH: "เปลี่ยนรหัสผ่าน",
-          EN: "Change Password",
-        },
-        oldValues: null,
-        props: ["old_password", "new_password", "repeat_new_password"],
-      },
-    };
-
-    setModal(modals[modalType]);
+  const handleOpen = (type: string) => {
+    setModal(type);
     setOpen(true);
   };
 
   const handleClose = () => {
-    setModal({});
+    setModal("");
     setOpen(false);
   };
 
   return (
     <>
       <EmpNavbar language={language} setLanguage={setLanguage} />
-      {myProfile && (
+      {myProfile ? (
         <div className="mx-auto max-w-11xl px-2 mt-5 sm:px-6 lg:px-8">
           <div className="flex flex-wrap">
             <div className="w-full md:w-1/3 lg:w-1/3 xl:w-1/3 mb-2">
@@ -129,12 +103,23 @@ export const EmpProfile = () => {
                         <div className="fixed inset-0 transition-opacity">
                           <div className="absolute inset-0 bg-black opacity-50"></div>
                         </div>
-                        {modal.title && (
+                        {modal !== "" && (
                           <div className="relative z-50 bg-white w-[32rem] p-2 rounded">
                             <div className="p-2 border border-black">
                               <div className="flex justify-between">
                                 <div className="font-bold text-xl">
-                                  {modal.title[language]}
+                                  {modal === "profile"
+                                    ? { TH: "ข้อมูลของฉัน", EN: "My Profile" }[
+                                        language
+                                      ]
+                                    : modal === "address"
+                                    ? { TH: "ที่อยู่ของฉัน", EN: "My Address" }[
+                                        language
+                                      ]
+                                    : {
+                                        TH: "เปลี่ยนรหัสผ่าน",
+                                        EN: "Change Password",
+                                      }[language]}
                                 </div>
                                 <button onClick={handleClose}>
                                   <i className="fa-solid fa-xmark fa-lg"></i>
@@ -142,26 +127,41 @@ export const EmpProfile = () => {
                               </div>
                               <hr className="border border-black mt-1 mb-3" />
                               <ProfileForm
-                                formType={modal.type}
-                                oldValues={modal.oldValues}
-                                properties={modal.props}
+                                propStyle={
+                                  modal === "profile"
+                                    ? [
+                                        ["firstname", "lastname"],
+                                        "email",
+                                        "phone",
+                                        "gender",
+                                      ]
+                                    : modal === "address"
+                                    ? [
+                                        "address",
+                                        ["region", "province"],
+                                        "district",
+                                        "sub_district",
+                                      ]
+                                    : [
+                                        "old_password",
+                                        "new_password",
+                                        "repeat_new_password",
+                                      ]
+                                }
+                                properties={
+                                  modal === "profile"
+                                    ? myProfile!
+                                    : modal === "address"
+                                    ? myAddress!
+                                    : {
+                                        old_password: "",
+                                        new_password: "",
+                                        repeat_new_password: "",
+                                      }
+                                }
                                 language={language}
+                                handleClose={handleClose}
                               />
-                              <button
-                                className={`${buttonCLR({
-                                  color: "Success",
-                                })} mt-1 mb-3 w-full py-1`}
-                              >
-                                Confirm
-                              </button>
-                              <button
-                                className={`${buttonCLR({
-                                  color: "Danger",
-                                })} w-full py-1`}
-                                onClick={handleClose}
-                              >
-                                Cancel
-                              </button>
                             </div>
                           </div>
                         )}
@@ -174,6 +174,8 @@ export const EmpProfile = () => {
             </div>
           </div>
         </div>
+      ) : (
+        <LoaderCircle height="100vh" color="gray" />
       )}
     </>
   );

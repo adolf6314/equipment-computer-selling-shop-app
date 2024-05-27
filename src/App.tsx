@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home } from "./Member/Home";
 import { EmployeeRoutes } from "./routes/EmployeeRoutes";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 
 export const App = () => {
   useEffect(() => {

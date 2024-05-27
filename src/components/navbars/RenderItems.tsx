@@ -34,7 +34,7 @@ export const NavItem = ({
           key={index}
           to={`/eqmcpt/provider/${nPath}`}
           className={`${classLink} ${
-            index === itemCurrent ? "item-current" : ""
+            index === itemCurrent && "item-current"
           }`}
           onClick={() => handlePathSet(index)}
         >
@@ -59,7 +59,7 @@ export const ProfileMenu = ({
   <>
     <Link
       to="/eqmcpt/provider/profile"
-      className={`${classLink} ${itemCurrent > 3 ? "item-current" : ""}`}
+      className={`${classLink} ${itemCurrent > 3 && "item-current"}`}
       onClick={() => handlePathSet(4)}
     >
       {language !== "EN" ? "ข้อมูลของฉัน" : "Profile"}
